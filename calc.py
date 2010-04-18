@@ -25,7 +25,51 @@ def calc(seq, where):
 			max_item += ',' + i
 	print "Maximum at", max_item, ",product", maximum
 
+def permute(seq):
+	result = []
+	for a in seq:
+		for b in seq:
+			for c in seq:
+				for d in seq:
+					for e in seq:
+						if a!=b and a!=c and a!=d and a!=e and \
+							b!=c and b!=d and b!=e and \
+							c!=d and c!=e and d!=e:
+							result.append(''.join([a,b,c,d,e]))
+	return result
+
+def permute1(seq):
+	l = len(seq)
+	if l == 1:
+		return [seq]
+	else:
+		res = []
+		for i in range(len(seq)):
+			rest = seq[:i] + seq[i+1:]
+			for x in permute1(rest):
+				res.append(seq[i:i+1] + x)
+		return res
+
+def permute2(seq):
+	l = len(seq)
+	if l <= 2:
+		if l == 2:
+			return [ seq, [seq[1], seq[0]] ]
+		else:
+			return [seq]
+		return [seq]
+	else:
+		res = []
+		for i in range(len(seq)):
+			rest = seq[:i] + seq[i+1:]
+			for x in permute1(rest):
+				res.append(seq[i:i+1] + x)
+		return res
+
 if __name__ == '__main__':
-	seq = [ "56789", "56798" ]
-	where = 3
-	calc(seq, where)
+	import sys
+	seq = list(sys.argv[1])
+	where = int(sys.argv[2])
+	thelist = [ ''.join(x) for x in permute2(seq) ]
+	print 'Got', len(thelist), 'items.'
+	calc(thelist, where)
